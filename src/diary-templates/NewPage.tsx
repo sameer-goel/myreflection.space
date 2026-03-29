@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Save } from 'lucide-react';
-import bgImage from '../../../website_assets/reflection of tree on a lake.png';
+import bgImage from '../assets/reflection of tree on a lake.png';
 
 interface NewPageProps {
   coverColor: string;
