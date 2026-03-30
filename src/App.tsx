@@ -322,13 +322,13 @@ export default function App() {
         <p style={{
           fontSize: '11px',
           letterSpacing: '0.08em',
-          color: isDark ? 'rgba(255,255,255,0.28)' : 'rgba(80,80,100,0.45)',
+          color: isDark ? 'rgba(255,255,255,0.28)' : 'rgba(100,100,100,0.55)',
           fontFamily: "'Lora', serif",
           textAlign: 'center',
           lineHeight: 1.7,
         }}>
           AI Awareness Society · Founded by{' '}
-          <span style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(80,80,100,0.65)' }}>
+          <span style={{ color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(100,100,100,0.75)' }}>
             Ankon Das · Claudia Abei · Jordan (ToU) · Kristina Akopyan · Laura Zavialova · Lilian Nunes Almeida
           </span>
         </p>
