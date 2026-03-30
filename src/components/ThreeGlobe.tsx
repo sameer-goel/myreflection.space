@@ -27,7 +27,7 @@ const PINS: Pin[] = [
 ];
 
 export const ThreeGlobe: React.FC = () => {
-  const globeRef = useRef<GlobeMethods>();
+  const globeRef = useRef<GlobeMethods>(undefined);
   const [countries, setCountries] = useState<any>(null);
 
   useEffect(() => {

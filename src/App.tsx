@@ -8,6 +8,7 @@ import secondPageLogo from './assets/ v3_second_page_logo.png';
 import ThreeGlobe from './components/ThreeGlobe';
 
 type Cover = 'native' | 'promax' | 'pulse' | 'voice';
+type ConceptModal = 'why' | 'how' | 'value';
 
 type BgTexture = 'clean' | 'mesh' | 'dark' | 'watercolor';
 
@@ -100,7 +101,7 @@ export default function App() {
   const [lastAesthetic, setLastAesthetic] = useState<'native' | 'promax'>('native');
   const [diaryOpen, setDiaryOpen] = useState(false);
   const [bgTexture, setBgTexture] = useState<BgTexture>('dark');
-  const [conceptModal, setConceptModal] = useState<'why' | 'how' | null>(null);
+  const [conceptModal, setConceptModal] = useState<ConceptModal | null>(null);
 
   const handleSwitch = (cover: Cover) => {
     if (cover === 'native' || cover === 'promax') setLastAesthetic(cover);

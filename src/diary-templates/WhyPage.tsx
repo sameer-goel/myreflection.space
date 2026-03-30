@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import rough from 'roughjs';
 
 /* ──────────────────────── SVG filter definitions ──────────────────────── */
@@ -181,14 +181,8 @@ interface WhyPageProps {
   borderRadius?: string;
 }
 
-const WhyPage = ({ coverColor = '#557eb5', borderColor = '#3F5B7B', borderRadius = '0.75rem' }: WhyPageProps) => {
-  const [entered, setEntered] = useState(false);
+const WhyPage = ({ borderColor = '#3F5B7B', borderRadius = '0.75rem' }: WhyPageProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setEntered(true), 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div
