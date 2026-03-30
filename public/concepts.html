@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Reflection Space — Visual Concepts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #f5f0e8;
+      font-family: 'Lora', serif;
+      color: #3a3a3a;
+      min-height: 100vh;
+    }
+
+    /* Subtle paper texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 28px,
+          rgba(0,0,0,0.02) 28px,
+          rgba(0,0,0,0.02) 29px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      position: relative;
+    }
+
+    .page:first-child {
+      background: linear-gradient(160deg, #f5f0e8 0%, #e8e0d0 100%);
+    }
+
+    .page:nth-child(2) {
+      background: linear-gradient(160deg, #e8e0d0 0%, #f5f0e8 50%, #e0ebe8 100%);
+    }
+
+    .page:nth-child(3) {
+      background: linear-gradient(160deg, #e0ebe8 0%, #f5f0e8 100%);
+    }
+
+    /* Title page */
+    .title-page h1 {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #557eb5;
+      text-align: center;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .title-page .subtitle {
+      font-family: 'Lora', serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: #8a7a6a;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 400px;
+      line-height: 1.8;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bob 2s ease-in-out infinite;
+    }
+
+    .scroll-hint span {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 0.75rem;
+      color: #b8a898;
+      letter-spacing: 2px;
+    }
+
+    .scroll-hint .arrow {
+      font-size: 1.5rem;
+      color: #b8a898;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* Concept sections */
+    .concept-label {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #557eb5;
+      margin-bottom: 8px;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .concept-description {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      color: #8a7a6a;
+      font-style: italic;
+      text-align: center;
+      max-width: 500px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .concept-frame {
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 4px 20px rgba(0,0,0,0.08),
+        0 20px 60px rgba(0,0,0,0.06),
+        inset 0 0 0 1px rgba(255,255,255,0.5);
+    }
+
+    .concept-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      border: 3px solid rgba(85, 126, 181, 0.15);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .concept-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Decorative elements */
+    .leaf {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #c8b898, transparent);
+      margin: 0 auto;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Title Page -->
+  <section class="page title-page">
+    <span class="leaf" style="top: 15%; left: 10%; transform: rotate(-30deg);">🍃</span>
+    <span class="leaf" style="top: 25%; right: 12%; transform: rotate(20deg);">🌿</span>
+    <span class="leaf" style="bottom: 20%; left: 15%; transform: rotate(45deg);">🍂</span>
+    <h1>My Reflection Space</h1>
+    <p class="subtitle">
+      Visual concepts for two new diary pages — exploring the <em>why</em> behind the movement and the <em>how</em> it creates value in a human life.
+    </p>
+    <div class="scroll-hint">
+      <span>scroll</span>
+      <span class="arrow">↓</span>
+    </div>
+    <div class="divider"></div>
+  </section>
+
+  <!-- WHY Page Concept -->
+  <section class="page">
+    <span class="leaf" style="top: 8%; right: 8%; transform: rotate(15deg); font-size: 2.5rem;">🌀</span>
+    <h2 class="concept-label">Page 1 — WHY</h2>
+    <p class="concept-description">
+      The split scene: digital chaos vs. the quiet clarity of self-reflection.<br>
+      The diary is the bridge between the two worlds.
+    </p>
+    <div class="concept-frame">
+      <img src="why_concept.png" alt="WHY concept — chaos vs clarity split scene with diary as the bridge" />
+    </div>
+    <div class="divider"></div>
+  </section>
+
+  <!-- HOW Page Concept -->
+  <section class="page">
+    <span class="leaf" style="top: 10%; left: 6%; transform: rotate(-20deg); font-size: 2.5rem;">🌱</span>
+    <h2 class="concept-label">Page 2 — HOW</h2>
+    <p class="concept-description">
+      The winding journey: from opening the diary to global connection and personal growth.<br>
+      Each step adds value — self-awareness, creativity, empathy, direction.
+    </p>
+    <div class="concept-frame">
+      <img src="how_concept.png" alt="HOW concept — winding journey path from diary to clarity with growing tree of values" />
+    </div>
+  </section>
+
+</body>
+</html>

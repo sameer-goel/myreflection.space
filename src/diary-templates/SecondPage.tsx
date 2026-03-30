@@ -1,18 +1,13 @@
 import bgImage from '../assets/reflection of tree on a lake.png';
 import secondPageLogo from '../assets/ v3_second_page_logo.png';
-import prompts from './useQuestions';
-
-const QUESTIONS = prompts;
-
+import descriptionImage from '../assets/1stPageImage.png';
 interface SecondPageProps {
   coverColor: string;
   borderColor: string;
   borderRadius?: string;
-  onPromptClick?: (index: number) => void;
-  answers?: Record<number, string>;
 }
 
-const SecondPage = ({ borderRadius = '0.75rem', onPromptClick, answers = {} }: SecondPageProps) => (
+const SecondPage = ({ borderRadius = '0.75rem' }: SecondPageProps) => (
   <div
     className="absolute inset-0 bg-white flex flex-col overflow-hidden"
     style={{ borderRadius }}
@@ -29,39 +24,23 @@ const SecondPage = ({ borderRadius = '0.75rem', onPromptClick, answers = {} }: S
     />
 
     {/* Logo */}
-    <div className="relative z-10 flex justify-center pt-5 pb-1 flex-shrink-0">
-      <img src={secondPageLogo} alt="logo" style={{ height: '72px', objectFit: 'contain' }} />
+    <div className="relative z-10 flex justify-center pt-4 pb-0.5 flex-shrink-0">
+      <img src={secondPageLogo} alt="logo" style={{ height: '42px', objectFit: 'contain' }} />
     </div>
 
-    {/* Reflection prompts list */}
-    <div className="relative z-10 flex flex-col px-4 gap-0 flex-1">
-      {QUESTIONS.map((q, i) => {
-        const answered = !!answers[i];
-        return (
-          <button
-            key={i}
-            onClick={(e) => { e.stopPropagation(); onPromptClick?.(i); }}
-            className="text-left py-2 px-2 rounded-lg border-b border-gray-100 last:border-0 group flex items-center justify-between gap-2 transition-all duration-150 hover:bg-amber-50 hover:border-transparent active:scale-[0.98]"
-          >
-            <span className="text-[10.5px] leading-[1.55] text-gray-600 group-hover:text-gray-900 transition-colors flex-1" style={{ fontFamily: "'Lora', serif" }}>
-              <span className="text-amber-400 font-semibold mr-1">P{i + 1}.</span>
-              {q}
-            </span>
-            <span className="flex items-center gap-1 flex-shrink-0">
-              {answered ? (
-                <>
-                  {/* green tick */}
-                  <span className="text-emerald-500 text-[11px]">✓</span>
-                  {/* edit icon */}
-                  <span className="text-gray-300 group-hover:text-amber-400 transition-colors text-[10px]">✎</span>
-                </>
-              ) : (
-                <span className="text-amber-300 group-hover:text-amber-500 transition-all duration-150 opacity-0 group-hover:opacity-100 translate-x-[-4px] group-hover:translate-x-0">›</span>
-              )}
-            </span>
-          </button>
-        );
-      })}
+    {/* Reflection Scene Image from Page 1 */}
+    <div className="relative z-10 flex justify-center px-16 mt-1 flex-shrink-0">
+      <img src={descriptionImage} alt="Reflection" className="w-[85%] h-auto object-contain" />
+    </div>
+
+    {/* Description container */}
+    <div className="relative z-10 flex-1 flex items-center justify-center px-10">
+      <p 
+        className="text-[11px] leading-[1.8] text-gray-500 italic font-medium text-center" 
+        style={{ fontFamily: "'Lora', serif" }}
+      >
+        In today’s fast-evolving digital world, artificial intelligence (AI) touches every aspect of our lives, from productivity to personal well-being and mental health. This reflective activity invites you to explore how AI impacts your life, your mental health, and your journey toward mindful living. Your honest reflections will contribute to a shared perspective on AI's effects and its intersection with the well-being of individuals.
+      </p>
     </div>
 
     {/* Footer */}

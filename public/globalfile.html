@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Interactive Globe - Real Earth</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            cursor: grab;
+        }
+
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+
+        .ui-layer {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+        }
+
+        .pointer-all {
+            pointer-events: all;
+        }
+
+        .country-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .country-card:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: #38bdf8;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        #message-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+
+        #message-modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ui-layer">
+        <!-- Top Header -->
+        <div class="flex items-start justify-between">
+
+
+            <!-- Reset Button -->
+            <button onclick="resetGlobe()" title="Reset View"
+                class="pointer-all flex items-center gap-2 px-4 py-2 bg-slate-900/70 backdrop-blur-md border border-white/10 rounded-full text-slate-300 text-xs font-semibold hover:bg-slate-800/90 hover:text-white hover:border-sky-400 transition-all shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation - Flag Strip -->
+        <div class="flex gap-2 overflow-x-auto pb-4 pointer-all">
+            <button onclick="flyToCountry('USA')" title="United States" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇺🇸</button>
+            <button onclick="flyToCountry('Canada')" title="Canada" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇨🇦</button>
+            <button onclick="flyToCountry('Mexico')" title="Mexico" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇲🇽</button>
+            <button onclick="flyToCountry('Brazil')" title="Brazil" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇧🇷</button>
+            <button onclick="flyToCountry('Argentina')" title="Argentina" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇦🇷</button>
+            <button onclick="flyToCountry('UK')" title="United Kingdom" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇬🇧</button>
+            <button onclick="flyToCountry('France')" title="France" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇫🇷</button>
+            <button onclick="flyToCountry('Germany')" title="Germany" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇩🇪</button>
+            <button onclick="flyToCountry('Nigeria')" title="Nigeria" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇳🇬</button>
+            <button onclick="flyToCountry('South Africa')" title="South Africa" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇿🇦</button>
+            <button onclick="flyToCountry('India')" title="India" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇮🇳</button>
+            <button onclick="flyToCountry('Japan')" title="Japan" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇯🇵</button>
+            <button onclick="flyToCountry('South Korea')" title="South Korea" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇰🇷</button>
+            <button onclick="flyToCountry('Australia')" title="Australia" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇦🇺</button>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="message-modal" class="pointer-all">
+        <div class="bg-slate-900/90 backdrop-blur-xl border border-white/20 p-6 rounded-3xl shadow-2xl max-w-sm w-full relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Flag + Name -->
+            <h2 id="modal-title" class="text-xl font-bold text-white mb-4"></h2>
+
+            <!-- Question -->
+            <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-1">Question</p>
+            <p id="modal-question" class="text-slate-200 text-sm font-medium leading-relaxed mb-4"></p>
+
+            <!-- Answer -->
+            <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-1">Answer</p>
+            <p id="modal-body" class="italic text-slate-300 text-sm leading-relaxed mb-5"></p>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-5 pt-4 border-t border-white/10">
+                <button onclick="handleLike(this)" class="flex items-center gap-1.5 text-slate-400 hover:text-rose-400 transition-colors text-xs">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    <span class="like-count">0</span>
+                </button>
+                <button onclick="handleComment()" class="flex items-center gap-1.5 text-slate-400 hover:text-sky-400 transition-colors text-xs">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span>Comment</span>
+                </button>
+                <button onclick="handleShare()" class="flex items-center gap-1.5 text-slate-400 hover:text-emerald-400 transition-colors text-xs ml-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <span>Share</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script>
+        let scene, camera, renderer, globe, stars;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let rotationSpeed = 0.0015;
+        let targetQuaternion = new THREE.Quaternion();
+        let isFlying = false;
+
+        const countryData = {
+            'USA': {
+                lat: 37.0902, lon: -95.7129, color: 0x3b82f6,
+                sender: "Sarah Jenkins", avatar: "🇺🇸", tag: "North America",
+                question: "Am I using AI to enhance my thinking, or to avoid it?",
+                message: "Honestly? Both. I use ChatGPT to draft emails I'm anxious about, which saves me hours — but sometimes I catch myself asking it things I already know the answer to. It's like I'm outsourcing confidence. I'm trying to notice when I reach for it out of laziness versus genuine need.",
+                likes: 2341, comments: 187, shares: 94
+            },
+            'UK': {
+                lat: 55.3781, lon: -3.4360, color: 0x10b981,
+                sender: "Oliver Ashworth", avatar: "🇬🇧", tag: "Europe",
+                question: "Do I think AI is more likely to unite or divide humanity?",
+                message: "Divide, in the short run. The people who can afford good AI tools are pulling further ahead. I work in education and I watch students from wealthier schools use AI tutors that are frankly better than what state schools can offer. The gap is already widening. Long term, I hope I'm wrong.",
+                likes: 1876, comments: 312, shares: 210
+            },
+            'Japan': {
+                lat: 36.2048, lon: 138.2529, color: 0xf43f5e,
+                sender: "Hina Tanaka", avatar: "🇯🇵", tag: "Asia",
+                question: "Do I miss the world before AI?",
+                message: "I miss searching for things without being given an answer immediately. There was something valuable in the struggle — reading five articles, forming a half-wrong opinion, then correcting it. Now the answer just arrives. I wonder what kind of thinking muscle I'm not using anymore.",
+                likes: 3102, comments: 445, shares: 388
+            },
+            'Australia': {
+                lat: -25.2744, lon: 133.7751, color: 0xf59e0b,
+                sender: "James Holt", avatar: "🇦🇺", tag: "Oceania",
+                question: "Have I ever felt genuinely threatened by AI? When? Why?",
+                message: "Yes — when I saw AI generate a full architectural design brief in 40 seconds that would have taken me two days. I'm an architect. I didn't feel replaced, I felt erased. Not my job specifically, but my craft. I've made peace with it now, but that moment sits with me.",
+                likes: 987, comments: 76, shares: 43
+            },
+            'Brazil': {
+                lat: -14.2350, lon: -51.9253, color: 0x84cc16,
+                sender: "Mariana Costa", avatar: "🇧🇷", tag: "South America",
+                question: "What role do I want AI to play in my life long-term?",
+                message: "I want it to handle the repetitive and leave me the human parts — the conversations, the intuitions, the creativity. What I don't want is for it to write my feelings for me. I already notice myself reaching for AI to word things I should be sitting with. That's where I draw the line.",
+                likes: 1543, comments: 228, shares: 115
+            },
+            'Germany': {
+                lat: 51.1657, lon: 10.4515, color: 0xa78bfa,
+                sender: "Lukas Bauer", avatar: "��", tag: "Europe",
+                question: "Does AI degrade the quality of my life?",
+                message: "Not yet — but I feel the edges fraying. I used to read long-form articles every morning. Now I ask for summaries. I used to write letters to friends. Now I draft them with AI and edit slightly. The quality of my output is higher, but the quality of my attention is lower. That trade worries me.",
+                likes: 2208, comments: 391, shares: 167
+            },
+            'India': {
+                lat: 20.5937, lon: 78.9629, color: 0xfb923c,
+                sender: "Priya Nair", avatar: "��", tag: "Asia",
+                question: "Am I creating anything meaningful in this world?",
+                message: "I ask myself this more since AI arrived. Before, writing code felt like building something. Now I describe what I want and it appears. I'm faster, but I feel less like a maker. I've started painting on weekends — no AI, no prompts, just my hands. That's where I feel real again.",
+                likes: 4417, comments: 603, shares: 512
+            },
+            'Nigeria': {
+                lat: 9.0820, lon: 8.6753, color: 0x34d399,
+                sender: "Emeka Okafor", avatar: "🇳🇬", tag: "Africa",
+                question: "Do I think AI is more likely to unite or divide humanity?",
+                message: "Here in Lagos, AI feels like a foreign language being spoken over our heads. The tools are built for English, for Western contexts, for problems that aren't ours. I use them and they work — partially. I think AI will unite the people who already have access and leave the rest of us translating ourselves into it.",
+                likes: 3891, comments: 724, shares: 630
+            },
+            'Canada': {
+                lat: 56.1304, lon: -106.3468, color: 0x60a5fa,
+                sender: "Aisha Tremblay", avatar: "🇨🇦", tag: "North America",
+                question: "Do I mindfully use AI?",
+                message: "I set rules for myself. No AI before 10am — that's my thinking time. No AI for anything I'm writing to someone I love. No AI for decisions that involve my values. I break these rules sometimes. But having them means I notice when I do. Mindfulness isn't about perfection, it's about noticing.",
+                likes: 1129, comments: 143, shares: 88
+            },
+            'South Korea': {
+                lat: 35.9078, lon: 127.7669, color: 0xf472b6,
+                sender: "Ji-woo Choi", avatar: "🇰🇷", tag: "Asia",
+                question: "Does AI help me to enhance my cognition?",
+                message: "Yes, but unevenly. My research is sharper. My writing is cleaner. But my memory is worse — I stopped trying to remember things because I know I can just ask. My professor says the same thing happened with calculators and arithmetic. Maybe every tool costs us something we didn't know we were using.",
+                likes: 2756, comments: 318, shares: 241
+            },
+            'Mexico': {
+                lat: 23.6345, lon: -102.5528, color: 0xfbbf24,
+                sender: "Diego Ramírez", avatar: "🇲🇽", tag: "North America",
+                question: "Am I facing any downsides of AI?",
+                message: "My younger brother lost his translation job to AI last year. He was good at it — nuanced, cultural, careful. The AI is faster and cheaper and misses things he would never miss. I use AI every day for my own work and I feel guilty about it. That guilt is a downside nobody talks about.",
+                likes: 5032, comments: 891, shares: 743
+            },
+            'South Africa': {
+                lat: -30.5595, lon: 22.9375, color: 0x4ade80,
+                sender: "Naledi Dlamini", avatar: "🇿🇦", tag: "Africa",
+                question: "What role do I want AI to play in my life long-term?",
+                message: "I want it to be a tool, not a voice. In my community, storytelling is how we pass down who we are. If AI starts telling our stories — even helpfully — something essential gets lost. I'll use it for logistics, for research, for the boring parts. But the meaning-making stays human. That's non-negotiable for me.",
+                likes: 2093, comments: 267, shares: 198
+            },
+            'France': {
+                lat: 46.2276, lon: 2.2137, color: 0x818cf8,
+                sender: "Camille Dubois", avatar: "🇫🇷", tag: "Europe",
+                question: "Have I ever felt genuinely threatened by AI? When? Why?",
+                message: "When I saw an AI reproduce the style of my favourite painter perfectly, on demand, in seconds. I'm not a painter — but I felt something close to grief. Not for my job, but for the idea that mastery takes time. That years of practice produce something irreplaceable. AI made me question whether that's still true.",
+                likes: 3344, comments: 512, shares: 429
+            },
+            'Argentina': {
+                lat: -38.4161, lon: -63.6167, color: 0x86efac,
+                sender: "Valentina Ríos", avatar: "🇦🇷", tag: "South America",
+                question: "Do I miss the world before AI?",
+                message: "I miss being wrong in interesting ways. Before, when I didn't know something, I'd guess — and my guesses revealed something about how I think. Now I just ask. The answer is right, but it's not mine. I miss the texture of not knowing. I miss the productive confusion that used to lead me somewhere unexpected.",
+                likes: 1678, comments: 234, shares: 156
+            }
+        };
+
+        const GLOBE_RADIUS = 100;
+
+        window.onload = function () {
+            init();
+            animate();
+        };
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.z = 350;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+            const sun = new THREE.DirectionalLight(0xffffff, 0.6);
+            sun.position.set(5, 3, 5);
+            scene.add(sun);
+
+            const loader = new THREE.TextureLoader();
+            const earthTexture = loader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+            const bumpTexture = loader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
+
+            const globeGeometry = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 64);
+            const globeMaterial = new THREE.MeshPhongMaterial({
+                map: earthTexture,
+                bumpMap: bumpTexture,
+                bumpScale: 2,
+                shininess: 5
+            });
+
+            globe = new THREE.Mesh(globeGeometry, globeMaterial);
+            scene.add(globe);
+
+            Object.keys(countryData).forEach(key => {
+                const data = countryData[key];
+                addMarker(data.lat, data.lon, data.color, key);
+            });
+
+            const starGeometry = new THREE.BufferGeometry();
+            const starMaterial = new THREE.PointsMaterial({ color: 0xc0c8e0, size: 0.6 });
+            const starVertices = [];
+            for (let i = 0; i < 4000; i++) {
+                starVertices.push((Math.random() - 0.5) * 2000, (Math.random() - 0.5) * 2000, (Math.random() - 0.5) * 2000);
+            }
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+
+            setupInteraction();
+        }
+
+        function latLonToVector3(lat, lon, radius) {
+            const phi = (90 - lat) * (Math.PI / 180);
+            const theta = (lon + 180) * (Math.PI / 180);
+            return new THREE.Vector3(
+                -radius * Math.sin(phi) * Math.cos(theta),
+                radius * Math.cos(phi),
+                radius * Math.sin(phi) * Math.sin(theta)
+            );
+        }
+
+        function addMarker(lat, lon, color, label) {
+            const pos = latLonToVector3(lat, lon, GLOBE_RADIUS);
+            const markerGeo = new THREE.SphereGeometry(1.5, 16, 16);
+            const markerMat = new THREE.MeshBasicMaterial({ color: color });
+            const marker = new THREE.Mesh(markerGeo, markerMat);
+            marker.position.copy(pos);
+
+            const ringGeo = new THREE.RingGeometry(2, 2.5, 32);
+            const ringMat = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.position.copy(pos);
+            ring.lookAt(new THREE.Vector3(0, 0, 0));
+
+            globe.add(marker);
+            globe.add(ring);
+        }
+
+        function flyToCountry(name) {
+            const data = countryData[name];
+            if (!data) return;
+
+            closeModal(); // Hide any existing modal
+            isFlying = true;
+
+            const destPos = latLonToVector3(data.lat, data.lon, GLOBE_RADIUS);
+            const targetVec = destPos.clone().normalize();
+            const cameraVec = new THREE.Vector3(0, 0, 1);
+
+            const quaternion = new THREE.Quaternion().setFromUnitVectors(targetVec, cameraVec);
+            targetQuaternion.copy(quaternion);
+
+            rotationSpeed = 0;
+
+            // Zoom in
+            const zoomIn = setInterval(() => {
+                if (camera.position.z > 200) camera.position.z -= 4;
+                else clearInterval(zoomIn);
+            }, 16);
+
+            // Wait for animation to finish, then show modal
+            setTimeout(() => {
+                isFlying = false;
+                rotationSpeed = 0.0003;
+                openModal(name, data);
+            }, 2000);
+        }
+
+        function openModal(name, data) {
+            const modal = document.getElementById('message-modal');
+            document.getElementById('modal-title').innerText = `${data.avatar}  ${name}`;
+            document.getElementById('modal-question').innerText = data.question;
+            document.getElementById('modal-body').innerText = data.message;
+            document.getElementById('like-count').innerText = data.likes.toLocaleString();
+            document.getElementById('comment-count').innerText = data.comments.toLocaleString();
+            document.getElementById('share-count').innerText = data.shares.toLocaleString();
+            // reset like state
+            const likeBtn = document.getElementById('like-btn');
+            likeBtn.classList.remove('text-rose-400');
+            likeBtn.classList.add('text-slate-400');
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('message-modal').classList.remove('active');
+        }
+
+        function handleLike(btn) {
+            const count = btn.querySelector('.like-count');
+            const liked = btn.classList.toggle('text-rose-400');
+            btn.classList.toggle('text-slate-400', !liked);
+            count.innerText = liked ? parseInt(count.innerText) + 1 : Math.max(0, parseInt(count.innerText) - 1);
+        }
+
+        function handleComment() {
+            // placeholder for comment action
+        }
+
+        function handleShare() {
+            if (navigator.share) {
+                navigator.share({ title: document.getElementById('modal-title').innerText, text: document.getElementById('modal-body').innerText });
+            } else {
+                navigator.clipboard.writeText(document.getElementById('modal-body').innerText);
+            }
+        }
+
+        function resetGlobe() {
+            closeModal();
+            isFlying = true;
+            rotationSpeed = 0;
+
+            // Animate camera back to default zoom
+            const zoomTarget = 350;
+            const zoomStep = () => {
+                if (!camera) return;
+                camera.position.z += (zoomTarget - camera.position.z) * 0.08;
+                if (Math.abs(camera.position.z - zoomTarget) > 1) {
+                    requestAnimationFrame(zoomStep);
+                } else {
+                    camera.position.z = zoomTarget;
+                }
+            };
+            zoomStep();
+
+            // Smoothly slerp globe back to identity quaternion
+            const identity = new THREE.Quaternion();
+            targetQuaternion.copy(identity);
+
+            setTimeout(() => {
+                isFlying = false;
+                rotationSpeed = 0.0015;
+            }, 1200);
+        }
+
+        function setupInteraction() {
+            const container = document.getElementById('canvas-container');
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+                closeModal();
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging && !isFlying) {
+                    const deltaMove = {
+                        x: e.clientX - previousMousePosition.x,
+                        y: e.clientY - previousMousePosition.y
+                    };
+                    globe.rotation.y += deltaMove.x * 0.005;
+                    globe.rotation.x += deltaMove.y * 0.005;
+                    previousMousePosition = { x: e.clientX, y: e.clientY };
+                    rotationSpeed = 0;
+                }
+            });
+
+            window.addEventListener('mouseup', () => isDragging = false);
+
+            window.addEventListener('wheel', (e) => {
+                camera.position.z += e.deltaY * 0.15;
+                camera.position.z = Math.max(120, Math.min(camera.position.z, 600));
+                closeModal();
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (isFlying) {
+                globe.quaternion.slerp(targetQuaternion, 0.05);
+            } else if (!isDragging) {
+                globe.rotation.y += rotationSpeed;
+            }
+            stars.rotation.y += 0.0001;
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+
+</html>
