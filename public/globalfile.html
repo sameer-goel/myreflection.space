@@ -95,24 +95,70 @@
             </button>
         </div>
 
-        <!-- Bottom Navigation - Flag Strip -->
-        <div class="flex gap-2 overflow-x-auto pb-4 pointer-all">
-            <button onclick="flyToCountry('USA')" title="United States" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇺🇸</button>
-            <button onclick="flyToCountry('Canada')" title="Canada" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇨🇦</button>
-            <button onclick="flyToCountry('Mexico')" title="Mexico" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇲🇽</button>
-            <button onclick="flyToCountry('Brazil')" title="Brazil" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇧🇷</button>
-            <button onclick="flyToCountry('Argentina')" title="Argentina" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇦🇷</button>
-            <button onclick="flyToCountry('UK')" title="United Kingdom" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇬🇧</button>
-            <button onclick="flyToCountry('France')" title="France" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇫🇷</button>
-            <button onclick="flyToCountry('Germany')" title="Germany" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇩🇪</button>
-            <button onclick="flyToCountry('Nigeria')" title="Nigeria" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇳🇬</button>
-            <button onclick="flyToCountry('South Africa')" title="South Africa" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇿🇦</button>
-            <button onclick="flyToCountry('India')" title="India" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇮🇳</button>
-            <button onclick="flyToCountry('Japan')" title="Japan" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇯🇵</button>
-            <button onclick="flyToCountry('South Korea')" title="South Korea" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇰🇷</button>
-            <button onclick="flyToCountry('Australia')" title="Australia" class="text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-sky-400 hover:scale-110 transition-all">🇦🇺</button>
+    </div>
+
+    <!-- Bottom Flag Carousel -->
+    <div style="position:fixed; bottom:0px; left:0; right:0; z-index:10; padding:0 16px;">
+        <div id="flag-carousel" style="display:flex; gap:12px; overflow-x:auto; padding:12px 8px; scrollbar-width:none; -ms-overflow-style:none;">
+            <button onclick="flyToCountry('USA')" title="United States" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇺🇸</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">USA</span>
+            </button>
+            <button onclick="flyToCountry('Canada')" title="Canada" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇨🇦</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Canada</span>
+            </button>
+            <button onclick="flyToCountry('Mexico')" title="Mexico" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇲🇽</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Mexico</span>
+            </button>
+            <button onclick="flyToCountry('Brazil')" title="Brazil" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇧🇷</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Brazil</span>
+            </button>
+            <button onclick="flyToCountry('Argentina')" title="Argentina" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇦🇷</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Argentina</span>
+            </button>
+            <button onclick="flyToCountry('UK')" title="United Kingdom" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇬🇧</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">UK</span>
+            </button>
+            <button onclick="flyToCountry('France')" title="France" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇫🇷</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">France</span>
+            </button>
+            <button onclick="flyToCountry('Germany')" title="Germany" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇩🇪</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Germany</span>
+            </button>
+            <button onclick="flyToCountry('Nigeria')" title="Nigeria" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇳🇬</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Nigeria</span>
+            </button>
+            <button onclick="flyToCountry('South Africa')" title="South Africa" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇿🇦</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">S. Africa</span>
+            </button>
+            <button onclick="flyToCountry('India')" title="India" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇮🇳</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">India</span>
+            </button>
+            <button onclick="flyToCountry('Japan')" title="Japan" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇯🇵</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Japan</span>
+            </button>
+            <button onclick="flyToCountry('South Korea')" title="South Korea" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇰🇷</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">S. Korea</span>
+            </button>
+            <button onclick="flyToCountry('Australia')" title="Australia" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(15,23,42,0.7); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:10px 14px; cursor:pointer; transition:all 0.2s; min-width:72px;" onmouseover="this.style.borderColor='#38bdf8';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'">
+                <span style="font-size:2.2rem;line-height:1;">🇦🇺</span>
+                <span style="color:#94a3b8;font-size:10px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;">Australia</span>
+            </button>
         </div>
     </div>
+    <style>#flag-carousel::-webkit-scrollbar { display: none; }</style>
 
     <!-- Message Modal -->
     <div id="message-modal" class="pointer-all">
@@ -382,13 +428,6 @@
             document.getElementById('modal-title').innerText = `${data.avatar}  ${name}`;
             document.getElementById('modal-question').innerText = data.question;
             document.getElementById('modal-body').innerText = data.message;
-            document.getElementById('like-count').innerText = data.likes.toLocaleString();
-            document.getElementById('comment-count').innerText = data.comments.toLocaleString();
-            document.getElementById('share-count').innerText = data.shares.toLocaleString();
-            // reset like state
-            const likeBtn = document.getElementById('like-btn');
-            likeBtn.classList.remove('text-rose-400');
-            likeBtn.classList.add('text-slate-400');
             modal.classList.add('active');
         }
 

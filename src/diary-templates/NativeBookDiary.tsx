@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useGeoCountry } from './useGeoCountry';
 import { motion } from 'motion/react';
 import touLogo from '../assets/tou_logo.png';
@@ -46,9 +46,9 @@ const NativeBookDiary = ({ onClick, onGlobalView }: NativeBookDiaryProps) => {
   const [selectedPrompt, setSelectedPrompt] = useState<number | null>(null);
   const [userName, setUserName] = useState('');
   const [userCountry, setUserCountry] = useState('');
+  const userEditedCountry = useRef(false);
   const geoCountry = useGeoCountry();
-  // Auto-fill country from geo only if user hasn't typed anything yet
-  useEffect(() => { if (geoCountry && !userCountry) setUserCountry(geoCountry); }, [geoCountry]);
+  useEffect(() => { if (geoCountry && !userEditedCountry.current) setUserCountry(geoCountry); }, [geoCountry]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
   const handleCoverClick = () => { setPage(1); onClick?.(); };
@@ -119,7 +119,7 @@ const NativeBookDiary = ({ onClick, onGlobalView }: NativeBookDiaryProps) => {
         <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
           {page >= 2 && (
             <PageTurner onPrev={goPrev} onNext={goNext} canPrev={page > 1} canNext={page < MAX_PAGE} borderRadius="0.75rem">
-              <IdentityPage userName={userName} userCountry={userCountry} onUpdate={(n, c) => { setUserName(n); setUserCountry(c); }} borderRadius="0.75rem" />
+              <IdentityPage userName={userName} userCountry={userCountry} onUpdate={(n, c) => { setUserName(n); userEditedCountry.current = true; setUserCountry(c); }} borderRadius="0.75rem" />
             </PageTurner>
           )}
         </div>

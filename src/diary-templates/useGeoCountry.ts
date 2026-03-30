@@ -8,11 +8,11 @@ export function useGeoCountry(): string {
   const [country, setCountry] = useState('');
 
   useEffect(() => {
-    // ip-api.com free tier — no key required, returns JSON
-    fetch('https://ip-api.com/json/?fields=country')
+    // ipwho.is — free, HTTPS, no key required
+    fetch('https://ipwho.is/')
       .then(r => r.json())
       .then(data => {
-        if (data?.country) setCountry(data.country);
+        if (data?.success && data?.country) setCountry(data.country);
       })
       .catch(() => {/* silently fail — user can type manually */});
   }, []);
