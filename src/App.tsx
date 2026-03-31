@@ -73,7 +73,7 @@ const BG_TEXTURES: { id: BgTexture; label: string; emoji: string; style: React.C
     label: 'Divine Lights',
     emoji: '🌈',
     style: {
-      background: 'radial-gradient(ellipse at 20% 20%, #e0f2fe 0%, transparent 50%), radial-gradient(ellipse at 80% 10%, #fce7f3 0%, transparent 45%), radial-gradient(ellipse at 60% 80%, #ede9fe 0%, transparent 50%), radial-gradient(ellipse at 10% 80%, #d1fae5 0%, transparent 45%), #f8fafc',
+      background: 'linear-gradient(135deg, #ff6b6b 0%, #ffa500 16%, #ffff00 32%, #00e676 48%, #00bcd4 64%, #7c4dff 80%, #e040fb 100%)',
     },
   },
   {
@@ -122,10 +122,10 @@ export default function App() {
       <header
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 py-2"
         style={{
-          background: isDark ? 'rgba(10,10,18,0.35)' : 'rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderBottom: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(200,200,220,0.25)',
+          background: 'rgba(0,0,0,0.28)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          borderBottom: '1px solid rgba(255,255,255,0.12)',
         }}
       >
         <a href="/" onClick={() => { setActive('native'); setDiaryOpen(false); }}>
@@ -314,10 +314,10 @@ export default function App() {
       <footer
         className="fixed bottom-0 left-0 right-0 z-40 flex flex-col items-center pb-2 pt-1"
         style={{
-          background: isDark ? 'rgba(10,10,18,0.35)' : 'rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderTop: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(200,200,220,0.25)',
+          background: 'rgba(0,0,0,0.28)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          borderTop: '1px solid rgba(255,255,255,0.12)',
         }}
       >
         <p style={{
