@@ -330,7 +330,7 @@ export default function App() {
         }}>
           AI Awareness Society · Founded by{' '}
           <span style={{ color: 'rgba(196,181,253,0.9)' }}>
-            Ankon Das · Claudia Abei · Jordan (ToU) · Kristina Akopyan · Laura Zavialova · Lilian Nunes Almeida
+            Ankon Das · Claudia Abei · Kristina Akopyan · Laura Zavialova · Lilian Nunes Almeida
           </span>
         </p>
       </footer>
